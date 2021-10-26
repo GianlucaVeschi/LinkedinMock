@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.gianlucaveschi.linkedinmock.R
 import com.gianlucaveschi.linkedinmock.databinding.UserDetailViewBinding
 import com.gianlucaveschi.linkedinmock.domain.users.LinkedinUserBasic
+import com.gianlucaveschi.linkedinmock.domain.users.LinkedinUserExtended
 import com.gianlucaveschi.linkedinmock.ui.SharedViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -49,21 +52,33 @@ class LinkedinUserDetailFragment : Fragment() {
             viewModel.linkedinUserBasicDetail.collect {
                 it?.let {
                     Timber.d("imageUrl porcodio ${it.info.image}")
-                    binding.mainProgBar.visibility = View.INVISIBLE
-                    binding.linkedinUserTitle.text = it.info.name
-                    binding.linkedinUserId.text = it.uid
-                    binding.linkedinUserEmail.text = it.info.email
-                    it.info.image?.let { imageUrl ->
-                        bindUserDetailImage(imageUrl)
-                    }
+
+                    initiateDetailUI(it)
+
                 }
             }
+        }
+    }
+
+    private fun initiateDetailUI(it: LinkedinUserExtended) {
+        binding.apply {
+            mainProgBar.visibility = View.INVISIBLE
+            linkedinUserTitle.text = it.info.name
+            linkedinUserId.text = it.uid
+            linkedinUserEmail.text = it.info.email
+            linkedinUserNickname.text = it.info.nickname
+        }
+        it.info.image?.let { imageUrl ->
+            binding.linkedinUserImageUrl.text = imageUrl
+            bindUserDetailImage(imageUrl)
         }
     }
 
     private fun bindUserDetailImage(imageUrl: String) {
         Picasso.get()
             .load(imageUrl)
+            .resize(200,200)
+            .centerInside()
             .into(binding.linkedinUserImage, object : Callback {
                 override fun onSuccess() {
                     binding.linkedinUserImage.visibility = View.VISIBLE

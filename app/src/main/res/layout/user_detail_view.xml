@@ -63,6 +63,20 @@
                     android:text="@string/user_email"
                     android:textColor="#000"
                     android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/linkedin_user_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_nickname"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/linkedin_user_image_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="image url"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
 
                 <ProgressBar
                     android:id="@+id/main_prog_bar"
