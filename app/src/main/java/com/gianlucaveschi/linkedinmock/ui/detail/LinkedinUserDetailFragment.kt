@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.gianlucaveschi.linkedinmock.databinding.UserDetailViewBinding
 import com.gianlucaveschi.linkedinmock.domain.LinkedinUser
 import com.gianlucaveschi.linkedinmock.ui.SharedViewModel
@@ -19,6 +20,8 @@ import java.lang.Exception
 
 @AndroidEntryPoint
 class LinkedinUserDetailFragment : Fragment() {
+
+    private val args: LinkedinUserDetailFragmentArgs by navArgs()
 
     private lateinit var binding: UserDetailViewBinding
     private val viewModel: SharedViewModel by viewModels()
@@ -34,7 +37,8 @@ class LinkedinUserDetailFragment : Fragment() {
 
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
-        viewModel.getLinkedinUserDetail(196373)
+
+        viewModel.getLinkedinUserDetail(args.userUid)
 
         //Setting up the observers internally triggers the data to be retrieved from a DataSource
         collectLinkedinUserDetail()

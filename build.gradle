@@ -17,6 +17,7 @@ buildscript {
         okhttp_version = "3.14.9"
         logging_interceptor_version = "4.9.1"
         picassoVersion = "2.71828"
+        nav_version = "2.3.0"
     }
 
     repositories {
@@ -27,7 +28,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5")
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }

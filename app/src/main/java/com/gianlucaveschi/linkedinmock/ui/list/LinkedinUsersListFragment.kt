@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gianlucaveschi.linkedinmock.R
 import com.gianlucaveschi.linkedinmock.databinding.UsersListFragmentBinding
@@ -93,15 +94,8 @@ class LinkedinUsersListFragment : Fragment(), UsersAdapter.OnUserClickListener {
             .setIcon(android.R.drawable.ic_dialog_alert).show()
     }
 
-    companion object {
-        fun newInstance() = LinkedinUsersListFragment()
-    }
-
     override fun onUserClicked(userUid: Int) {
-        Toast.makeText(this.context, "shit $userUid", Toast.LENGTH_SHORT).show()
-        //Navigate to user detail
-//        activity?.supportFragmentManager?.beginTransaction()
-//            ?.replace(R.id.container, LinkedinUserDetailFragment.newInstance())
-//            ?.commitNow()
+        val action = LinkedinUsersListFragmentDirections.actionListFragmentToDetailFragment(userUid)
+        findNavController().navigate(action)
     }
 }
