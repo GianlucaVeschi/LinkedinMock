@@ -58,6 +58,9 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
 
+    //Picasso
+    implementation "com.squareup.picasso:picasso:$picassoVersion"
+
     // Gson
     implementation "com.google.code.gson:gson:$gson_version"
 

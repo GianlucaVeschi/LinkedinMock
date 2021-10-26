@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gianlucaveschi.linkedinmock.databinding.UserItemViewBinding
 import com.gianlucaveschi.linkedinmock.domain.LinkedinUser
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import java.lang.Exception
 
 class UsersAdapter : RecyclerView.Adapter<UsersAdapter.LinkedinUserViewHolder>() {
@@ -29,21 +31,21 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.LinkedinUserViewHolder>()
             binding.linkedinUserTitle.text = linkedinUserItem.info.name
         }
 
-        fun bindImage(LinkedinUserItem: LinkedinUser) {
+        fun bindImage(linkedinUserItem: LinkedinUser) {
             //Set LinkedinUser image
-//            Picasso.get()
-//                .load(LinkedinUserItem.LinkedinUserUrl)
-//                .into(binding.LinkedinUserImage, object : Callback {
-//                    override fun onSuccess() {
-//                        binding.LinkedinUserImage.visibility = View.VISIBLE
-//                        binding.progBar.visibility = View.INVISIBLE
-//                    }
-//
-//                    override fun onError(e: Exception?) {
-//                        binding.progBar.visibility = View.VISIBLE
-//                        binding.LinkedinUserImage.visibility = View.INVISIBLE
-//                    }
-//                })
+            Picasso.get()
+                .load(linkedinUserItem.info.pictureUrl)
+                .into(binding.linkedinUserImage, object : Callback {
+                    override fun onSuccess() {
+                        binding.linkedinUserImage.visibility = View.VISIBLE
+                        binding.progBar.visibility = View.INVISIBLE
+                    }
+
+                    override fun onError(e: Exception?) {
+                        binding.progBar.visibility = View.VISIBLE
+                        binding.linkedinUserImage.visibility = View.INVISIBLE
+                    }
+                })
         }
 
     }

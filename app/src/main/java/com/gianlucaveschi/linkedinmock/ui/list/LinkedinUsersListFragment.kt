@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gianlucaveschi.linkedinmock.databinding.UsersListFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
 
@@ -39,19 +41,17 @@ class LinkedinUsersListFragment : Fragment() {
 
         //Setting up the observers internally triggers the data to be retrieved from a DataSource
         //if(networkIsAvailable()){
-        //setUpObservers()
+        lifecycleScope.launchWhenStarted {
+            viewModel.linkedinUsers.collect {
+                if (!it.isNullOrEmpty()) {
+                    Timber.d("got the $it")
+                    usersAdapter.setLinkedinUsersList(it)
+                    binding.mainProgressBar.visibility = View.INVISIBLE
+                    binding.usersRecView.adapter = usersAdapter
+                }
+            }
+        }
     }
-
-//    private fun setUpObservers() {
-//        viewModel.usersList.let {
-//            if (!it.isNullOrEmpty()) {
-//                usersAdapter.setLinkedinUsersList(it)
-//                binding.mainProgressBar.visibility = View.INVISIBLE
-//                binding.usersRecView.adapter = usersAdapter
-//            }
-//        }
-//    }
-
 
     private fun setRecyclerView() {
         //Initialize adapter

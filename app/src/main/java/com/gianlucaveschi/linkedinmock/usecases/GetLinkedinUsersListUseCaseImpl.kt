@@ -11,8 +11,9 @@ class GetLinkedinUsersListUseCaseImpl(
     private val linkedinService: LinkedinService,
 ) : GetLinkedinUsersListUseCase {
 
-    override suspend fun run() : DataState<List<LinkedinUser>> {
-        return getLinkedinUsersList()
+    override suspend fun run() : Flow<DataState<List<LinkedinUser>>> = flow {
+            emit(DataState.loading())
+            emit(getLinkedinUsersList())
     }
 
     private suspend fun getLinkedinUsersList(): DataState<List<LinkedinUser>> = try {

@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface GetLinkedinUsersListUseCase {
-    suspend fun run() : DataState<List<LinkedinUser>>
+    suspend fun run() : Flow<DataState<List<LinkedinUser>>>
 }
