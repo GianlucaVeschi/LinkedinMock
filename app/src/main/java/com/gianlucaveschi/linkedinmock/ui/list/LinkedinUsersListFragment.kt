@@ -1,5 +1,6 @@
 package com.gianlucaveschi.linkedinmock.ui.list
 
+import android.app.AlertDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -7,10 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gianlucaveschi.linkedinmock.databinding.UsersListFragmentBinding
+import com.gianlucaveschi.linkedinmock.domain.util.NetworkStateHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
@@ -40,7 +43,12 @@ class LinkedinUsersListFragment : Fragment() {
         setRecyclerView()
 
         //Setting up the observers internally triggers the data to be retrieved from a DataSource
-        //if(networkIsAvailable()){
+        if(networkIsAvailable()){
+            collectLinkedinUsers()
+        }
+    }
+
+    private fun collectLinkedinUsers() {
         lifecycleScope.launchWhenStarted {
             viewModel.linkedinUsers.collect {
                 if (!it.isNullOrEmpty()) {
@@ -63,14 +71,24 @@ class LinkedinUsersListFragment : Fragment() {
         }
     }
 
-//    private fun networkIsAvailable(): Boolean {
-//        val available =
-//            NetworkStateHelper.isNetworkConnected(getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
-//        if (!available) {
-//            alertError()
-//        }
-//        return available
-//    }
+    private fun networkIsAvailable(): Boolean {
+        val available =
+            NetworkStateHelper.isNetworkConnected(
+                activity?.getSystemService(Context.CONNECTIVITY_SERVICE)
+                        as ConnectivityManager
+            )
+        if (!available) {
+            alertError()
+        }
+        return available
+    }
+
+    private fun alertError() {
+        AlertDialog.Builder(activity).setTitle("No Internet Connection")
+            .setMessage("Please check your internet connection and try again")
+            .setPositiveButton(android.R.string.ok) { _, _ -> }
+            .setIcon(android.R.drawable.ic_dialog_alert).show()
+    }
 
     companion object {
         fun newInstance() = LinkedinUsersListFragment()
