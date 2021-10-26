@@ -8,19 +8,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gianlucaveschi.linkedinmock.R
 import com.gianlucaveschi.linkedinmock.databinding.UsersListFragmentBinding
 import com.gianlucaveschi.linkedinmock.domain.util.NetworkStateHelper
 import com.gianlucaveschi.linkedinmock.ui.SharedViewModel
+import com.gianlucaveschi.linkedinmock.ui.detail.LinkedinUserDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
 
 @AndroidEntryPoint
-class LinkedinUsersListFragment : Fragment() {
+class LinkedinUsersListFragment : Fragment(), UsersAdapter.OnUserClickListener {
 
     private lateinit var binding: UsersListFragmentBinding
     private lateinit var usersAdapter: UsersAdapter
@@ -43,7 +46,7 @@ class LinkedinUsersListFragment : Fragment() {
         setRecyclerView()
 
         //Setting up the observers internally triggers the data to be retrieved from a DataSource
-        if(networkIsAvailable()){
+        if (networkIsAvailable()) {
             collectLinkedinUsers()
         }
     }
@@ -63,7 +66,7 @@ class LinkedinUsersListFragment : Fragment() {
 
     private fun setRecyclerView() {
         //Initialize adapter
-        usersAdapter = UsersAdapter()
+        usersAdapter = UsersAdapter(this)
         binding.usersRecView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
@@ -92,5 +95,13 @@ class LinkedinUsersListFragment : Fragment() {
 
     companion object {
         fun newInstance() = LinkedinUsersListFragment()
+    }
+
+    override fun onUserClicked(userUid: Int) {
+        Toast.makeText(this.context, "shit $userUid", Toast.LENGTH_SHORT).show()
+        //Navigate to user detail
+//        activity?.supportFragmentManager?.beginTransaction()
+//            ?.replace(R.id.container, LinkedinUserDetailFragment.newInstance())
+//            ?.commitNow()
     }
 }

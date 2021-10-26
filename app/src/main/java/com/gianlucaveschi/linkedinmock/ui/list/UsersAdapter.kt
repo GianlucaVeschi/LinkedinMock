@@ -10,7 +10,9 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.lang.Exception
 
-class UsersAdapter : RecyclerView.Adapter<UsersAdapter.LinkedinUserViewHolder>() {
+class UsersAdapter(
+    private val listener: OnUserClickListener
+) : RecyclerView.Adapter<UsersAdapter.LinkedinUserViewHolder>() {
 
     //Internal List containing all LinkedinUsers
     private val linkedinUsersList = ArrayList<LinkedinUser>()
@@ -22,17 +24,20 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.LinkedinUserViewHolder>()
     }
 
     // LinkedinUser View Holder
-    class LinkedinUserViewHolder(private val binding: UserItemViewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class LinkedinUserViewHolder(
+        private val binding: UserItemViewBinding
+    ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
-        //Using data binding
+        init {
+            itemView.setOnClickListener(this)
+        }
+
         fun bind(linkedinUserItem: LinkedinUser) {
             binding.linkedinUserId.text = linkedinUserItem.uid.toString()
             binding.linkedinUserTitle.text = linkedinUserItem.info.name
         }
 
         fun bindImage(linkedinUserItem: LinkedinUser) {
-            //Set LinkedinUser image
             Picasso.get()
                 .load(linkedinUserItem.info.pictureUrl)
                 .into(binding.linkedinUserImage, object : Callback {
@@ -48,6 +53,9 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.LinkedinUserViewHolder>()
                 })
         }
 
+        override fun onClick(v: View?) {
+            listener.onUserClicked(linkedinUsersList[adapterPosition].uid)
+        }
     }
 
     // Called when the RecyclerView needs a view holder to represent an item.
@@ -75,5 +83,9 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.LinkedinUserViewHolder>()
         // Pass the current LinkedinUser to the viewHolder
         holder.bind(linkedinUserItem)
         holder.bindImage(linkedinUserItem)
+    }
+
+    interface OnUserClickListener {
+        fun onUserClicked(userUid : Int)
     }
 }
