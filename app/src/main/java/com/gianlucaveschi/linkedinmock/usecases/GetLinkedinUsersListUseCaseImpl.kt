@@ -3,6 +3,8 @@ package com.gianlucaveschi.linkedinmock.usecases
 import com.gianlucaveschi.linkedinmock.domain.LinkedinUser
 import com.gianlucaveschi.linkedinmock.domain.util.DataState
 import com.gianlucaveschi.linkedinmock.network.LinkedinService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 class GetLinkedinUsersListUseCaseImpl(

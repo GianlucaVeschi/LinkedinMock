@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">LinkedinMock</string>
+    <string name="username">Username</string>
+    <string name="user_uid">User UID</string>
+    <string name="refresh_data">refresh data</string>
 </resources>

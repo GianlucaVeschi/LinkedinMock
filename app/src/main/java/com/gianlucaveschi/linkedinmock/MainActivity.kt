@@ -2,7 +2,7 @@ package com.gianlucaveschi.linkedinmock
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.gianlucaveschi.linkedinmock.ui.main.LinkedinUsersListFragment
+import com.gianlucaveschi.linkedinmock.ui.list.LinkedinUsersListFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
