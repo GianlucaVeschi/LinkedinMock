@@ -1,37 +1,31 @@
 package com.gianlucaveschi.linkedinmock.usecases
 
-import android.util.Log
 import com.gianlucaveschi.linkedinmock.domain.LinkedinUser
 import com.gianlucaveschi.linkedinmock.domain.util.DataState
 import com.gianlucaveschi.linkedinmock.network.LinkedinService
+import timber.log.Timber
 
 class GetLinkedinUsersListUseCaseImpl(
     private val linkedinService: LinkedinService,
 ) : GetLinkedinUsersListUseCase {
 
-    override suspend fun run() {
-        Log.d(TAG, "run: ")
-        getLinkedinUsersList()
+    override suspend fun run() : DataState<List<LinkedinUser>> {
+        return getLinkedinUsersList()
     }
 
-    private suspend fun getLinkedinUsersList() {
-        try {
-            Log.d(TAG, "Trying to get Users from the NETWORK...")
-            val response = linkedinService.getLinkedinUsersList()
-            Log.d(TAG, "getLinkedinUsersList: $response ")
-            Log.d(TAG, "getLinkedinUsersList: ${response.body()} ")
-
-        } catch (exception: Exception) {
-            handleError(exception.message)
-        }
+    private suspend fun getLinkedinUsersList(): DataState<List<LinkedinUser>> = try {
+        Timber.d("Trying to get Users from the NETWORK...")
+        val response = linkedinService.getLinkedinUsersList()
+        response.takeIf { it.isSuccessful }?.body()?.let { usersList ->
+            Timber.d("$usersList")
+            DataState(usersList)
+        } ?: handleError(response.message())
+    } catch (exception: Exception) {
+        handleError(exception.message)
     }
 
     private fun handleError(exceptionMessage: String?): DataState<List<LinkedinUser>> {
-        Log.d(TAG, "retrieval failed.")
+        Timber.d("retrieval failed.")
         return DataState.error(exceptionMessage ?: "Unknown Error")
-    }
-
-    companion object {
-        private const val TAG = "GetLinkedinUsersList"
     }
 }
