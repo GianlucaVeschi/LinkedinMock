@@ -3,4 +3,6 @@
     <string name="username">Username</string>
     <string name="user_uid">User UID</string>
     <string name="refresh_data">refresh data</string>
+    <string name="user_email">user email</string>
+    <string name="visit_linkedin_page">Visit Linkedin Page</string>
 </resources>

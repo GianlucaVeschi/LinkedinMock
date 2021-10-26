@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gianlucaveschi.linkedinmock.databinding.UsersListFragmentBinding
 import com.gianlucaveschi.linkedinmock.domain.util.NetworkStateHelper
+import com.gianlucaveschi.linkedinmock.ui.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
@@ -24,7 +24,7 @@ class LinkedinUsersListFragment : Fragment() {
 
     private lateinit var binding: UsersListFragmentBinding
     private lateinit var usersAdapter: UsersAdapter
-    private val viewModel: LinkedinUsersListViewModel by viewModels()
+    private val viewModel: SharedViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
