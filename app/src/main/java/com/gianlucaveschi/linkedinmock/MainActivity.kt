@@ -2,7 +2,7 @@ package com.gianlucaveschi.linkedinmock
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.gianlucaveschi.linkedinmock.ui.main.MainFragment
+import com.gianlucaveschi.linkedinmock.ui.main.LinkedinUsersListFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, LinkedinUsersListFragment.newInstance())
                 .commitNow()
         }
     }
