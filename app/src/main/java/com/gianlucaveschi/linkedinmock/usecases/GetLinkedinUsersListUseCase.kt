@@ -1,5 +1,5 @@
 package com.gianlucaveschi.linkedinmock.usecases
 
 interface GetLinkedinUsersListUseCase {
-    suspend fun getLinkedinUsersList()
+    suspend fun run()
 }

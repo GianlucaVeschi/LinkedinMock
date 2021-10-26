@@ -7,15 +7,17 @@ class GetLinkedinUsersListUseCaseImpl(
     private val linkedinService: LinkedinService,
 ) : GetLinkedinUsersListUseCase {
 
-    fun run() {
+    override suspend fun run() {
         Log.d(TAG, "run: ")
+        getLinkedinUsersList()
     }
 
-    override suspend fun getLinkedinUsersList() {
+    private suspend fun getLinkedinUsersList() {
         try {
             Log.d(TAG, "Trying to get Users from the NETWORK...")
             val response = linkedinService.getLinkedinUsersList()
             Log.d(TAG, "getLinkedinUsersList: $response ")
+            Log.d(TAG, "getLinkedinUsersList: ${response.body()} ")
 
         } catch (exception: Exception) {
             handleError(exception.message)

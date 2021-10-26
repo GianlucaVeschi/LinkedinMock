@@ -17,7 +17,7 @@ class UseCaseModule {
     @Provides
     fun provideGetLinkedinUsersListUseCase(
         linkedinService: LinkedinService,
-    ): GetLinkedinUsersListUseCaseImpl {
+    ): GetLinkedinUsersListUseCase {
         return GetLinkedinUsersListUseCaseImpl(
             linkedinService = linkedinService
         )

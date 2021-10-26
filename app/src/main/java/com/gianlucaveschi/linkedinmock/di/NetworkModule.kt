@@ -2,6 +2,7 @@ package com.gianlucaveschi.linkedinmock.di
 
 import android.content.Context
 import com.gianlucaveschi.linkedinmock.network.LinkedinService
+import com.gianlucaveschi.linkedinmock.network.interceptors.AuthInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 const val AWS_DB = "https://wgz27h2c1j.execute-api.us-east-1.amazonaws.com/"
+const val AUTH_TOKEN = "XWRavjM@aRhYE8n@T!GQXx6uGw3*TbnbA6Nsyx-8p9RN.4EVW96FxJJmrRBbFo*s*VuacHroKHr"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -36,6 +38,7 @@ object NetworkModule {
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addNetworkInterceptor(loggingInterceptor)
+            .addInterceptor(AuthInterceptor("Bearer", AUTH_TOKEN))
             .connectTimeout(30, TimeUnit.SECONDS) //If Backend is really slow
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
