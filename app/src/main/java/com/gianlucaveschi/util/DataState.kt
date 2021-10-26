@@ -1,4 +1,4 @@
-package com.gianlucaveschi.linkedinmock.domain.util
+package com.gianlucaveschi.util
 
 data class DataState<out T>(
     val data: T? = null,

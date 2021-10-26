@@ -1,7 +1,7 @@
 package com.gianlucaveschi.linkedinmock.usecases.list
 
-import com.gianlucaveschi.linkedinmock.domain.LinkedinUser
-import com.gianlucaveschi.linkedinmock.domain.util.DataState
+import com.gianlucaveschi.linkedinmock.domain.users.LinkedinUserBasic
+import com.gianlucaveschi.util.DataState
 import com.gianlucaveschi.linkedinmock.network.LinkedinService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -11,12 +11,12 @@ class GetLinkedinUsersListUseCaseImpl(
     private val linkedinService: LinkedinService,
 ) : GetLinkedinUsersListUseCase {
 
-    override suspend fun run() : Flow<DataState<List<LinkedinUser>>> = flow {
+    override suspend fun run() : Flow<DataState<List<LinkedinUserBasic>>> = flow {
             emit(DataState.loading())
             emit(getLinkedinUsersList())
     }
 
-    private suspend fun getLinkedinUsersList(): DataState<List<LinkedinUser>> = try {
+    private suspend fun getLinkedinUsersList(): DataState<List<LinkedinUserBasic>> = try {
         Timber.d("Trying to get Users from the NETWORK...")
         val response = linkedinService.getLinkedinUsersList()
         response.takeIf { it.isSuccessful }?.body()?.let { usersList ->
@@ -27,7 +27,7 @@ class GetLinkedinUsersListUseCaseImpl(
         handleError(exception.message)
     }
 
-    private fun handleError(exceptionMessage: String?): DataState<List<LinkedinUser>> {
+    private fun handleError(exceptionMessage: String?): DataState<List<LinkedinUserBasic>> {
         Timber.d("retrieval failed.")
         return DataState.error(exceptionMessage ?: "Unknown Error")
     }

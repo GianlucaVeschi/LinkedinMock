@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.gianlucaveschi.linkedinmock.databinding.UserDetailViewBinding
-import com.gianlucaveschi.linkedinmock.domain.LinkedinUser
+import com.gianlucaveschi.linkedinmock.domain.users.LinkedinUserBasic
 import com.gianlucaveschi.linkedinmock.ui.SharedViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -46,22 +46,24 @@ class LinkedinUserDetailFragment : Fragment() {
 
     private fun collectLinkedinUserDetail() {
         lifecycleScope.launchWhenStarted {
-            viewModel.linkedinUserDetail.collect {
+            viewModel.linkedinUserBasicDetail.collect {
                 it?.let {
-                    Timber.d("got the $it but the image is ${it.info.pictureUrl}")
+                    Timber.d("imageUrl porcodio ${it.info.image}")
                     binding.mainProgBar.visibility = View.INVISIBLE
                     binding.linkedinUserTitle.text = it.info.name
-                    binding.linkedinUserId.text = it.uid.toString()
+                    binding.linkedinUserId.text = it.uid
                     binding.linkedinUserEmail.text = it.info.email
-                    bindImage(it)
+                    it.info.image?.let { imageUrl ->
+                        bindUserDetailImage(imageUrl)
+                    }
                 }
             }
         }
     }
 
-    private fun bindImage(linkedinUserItem: LinkedinUser) {
+    private fun bindUserDetailImage(imageUrl: String) {
         Picasso.get()
-            .load(linkedinUserItem.info.pictureUrl)
+            .load(imageUrl)
             .into(binding.linkedinUserImage, object : Callback {
                 override fun onSuccess() {
                     binding.linkedinUserImage.visibility = View.VISIBLE
@@ -74,9 +76,5 @@ class LinkedinUserDetailFragment : Fragment() {
                     binding.linkedinUserImage.visibility = View.INVISIBLE
                 }
             })
-    }
-
-    companion object {
-        fun newInstance() = LinkedinUserDetailFragment()
     }
 }

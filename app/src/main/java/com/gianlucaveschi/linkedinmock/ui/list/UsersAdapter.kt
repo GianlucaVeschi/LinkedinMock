@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gianlucaveschi.linkedinmock.databinding.UserItemViewBinding
-import com.gianlucaveschi.linkedinmock.domain.LinkedinUser
+import com.gianlucaveschi.linkedinmock.domain.users.LinkedinUserBasic
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.lang.Exception
@@ -15,12 +15,11 @@ class UsersAdapter(
 ) : RecyclerView.Adapter<UsersAdapter.LinkedinUserViewHolder>() {
 
     //Internal List containing all LinkedinUsers
-    private val linkedinUsersList = ArrayList<LinkedinUser>()
+    private val linkedinUsersList = ArrayList<LinkedinUserBasic>()
 
-    fun setLinkedinUsersList(newLinkedinUsers: List<LinkedinUser>) {
+    fun setLinkedinUsersList(newLinkedinUserBasics: List<LinkedinUserBasic>) {
         this.linkedinUsersList.clear()
-        this.linkedinUsersList.addAll(newLinkedinUsers)
-        notifyDataSetChanged()
+        this.linkedinUsersList.addAll(newLinkedinUserBasics)
     }
 
     // LinkedinUser View Holder
@@ -32,14 +31,14 @@ class UsersAdapter(
             itemView.setOnClickListener(this)
         }
 
-        fun bind(linkedinUserItem: LinkedinUser) {
-            binding.linkedinUserId.text = linkedinUserItem.uid.toString()
-            binding.linkedinUserTitle.text = linkedinUserItem.info.name
+        fun bind(linkedinUserBasicItem: LinkedinUserBasic) {
+            binding.linkedinUserId.text = linkedinUserBasicItem.uid.toString()
+            binding.linkedinUserTitle.text = linkedinUserBasicItem.info.name
         }
 
-        fun bindImage(linkedinUserItem: LinkedinUser) {
+        fun bindAdapterImage(imageUrl : String) {
             Picasso.get()
-                .load(linkedinUserItem.info.pictureUrl)
+                .load(imageUrl)
                 .into(binding.linkedinUserImage, object : Callback {
                     override fun onSuccess() {
                         binding.linkedinUserImage.visibility = View.VISIBLE
@@ -78,11 +77,13 @@ class UsersAdapter(
     override fun onBindViewHolder(holder: LinkedinUserViewHolder, position: Int) {
 
         // Get the current LinkedinUser in the list
-        val linkedinUserItem = linkedinUsersList[position]
+        val linkedinUserItem : LinkedinUserBasic = linkedinUsersList[position]
 
         // Pass the current LinkedinUser to the viewHolder
         holder.bind(linkedinUserItem)
-        holder.bindImage(linkedinUserItem)
+        linkedinUserItem.info.pictureUrl?.let{
+            holder.bindAdapterImage(linkedinUserItem.info.pictureUrl)
+        }
     }
 
     interface OnUserClickListener {

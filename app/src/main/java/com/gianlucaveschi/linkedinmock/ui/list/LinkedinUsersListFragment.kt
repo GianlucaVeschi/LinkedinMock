@@ -8,16 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gianlucaveschi.linkedinmock.R
 import com.gianlucaveschi.linkedinmock.databinding.UsersListFragmentBinding
-import com.gianlucaveschi.linkedinmock.domain.util.NetworkStateHelper
+import com.gianlucaveschi.util.NetworkStateHelper
 import com.gianlucaveschi.linkedinmock.ui.SharedViewModel
-import com.gianlucaveschi.linkedinmock.ui.detail.LinkedinUserDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
@@ -54,7 +51,7 @@ class LinkedinUsersListFragment : Fragment(), UsersAdapter.OnUserClickListener {
 
     private fun collectLinkedinUsers() {
         lifecycleScope.launchWhenStarted {
-            viewModel.linkedinUsers.collect {
+            viewModel.linkedinUsersBasic.collect {
                 if (!it.isNullOrEmpty()) {
                     Timber.d("got the $it")
                     usersAdapter.setLinkedinUsersList(it)

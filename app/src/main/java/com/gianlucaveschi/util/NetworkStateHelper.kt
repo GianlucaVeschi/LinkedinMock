@@ -1,4 +1,4 @@
-package com.gianlucaveschi.linkedinmock.domain.util
+package com.gianlucaveschi.util
 
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities

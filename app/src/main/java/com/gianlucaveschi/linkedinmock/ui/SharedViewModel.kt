@@ -5,7 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gianlucaveschi.linkedinmock.domain.LinkedinUser
+import com.gianlucaveschi.linkedinmock.domain.users.LinkedinUserBasic
+import com.gianlucaveschi.linkedinmock.domain.users.LinkedinUserExtended
 import com.gianlucaveschi.linkedinmock.usecases.detail.GetLinkedinUserDetailUseCase
 import com.gianlucaveschi.linkedinmock.usecases.list.GetLinkedinUsersListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,11 +23,11 @@ class SharedViewModel @Inject constructor(
     private val getUserDetailUseCase: GetLinkedinUserDetailUseCase
 ) : ViewModel() {
 
-    private val _linkedinUsers: MutableStateFlow<List<LinkedinUser>?> = MutableStateFlow(listOf())
-    val linkedinUsers: StateFlow<List<LinkedinUser>?> = _linkedinUsers
+    private val _linkedinUsersBasic: MutableStateFlow<List<LinkedinUserBasic>?> = MutableStateFlow(listOf())
+    val linkedinUsersBasic: StateFlow<List<LinkedinUserBasic>?> = _linkedinUsersBasic
 
-    private val _linkedinUserDetail: MutableStateFlow<LinkedinUser?> = MutableStateFlow(null)
-    val linkedinUserDetail: StateFlow<LinkedinUser?> = _linkedinUserDetail
+    private val _linkedinUserBasicDetail: MutableStateFlow<LinkedinUserExtended?> = MutableStateFlow(null)
+    val linkedinUserBasicDetail: StateFlow<LinkedinUserExtended?> = _linkedinUserBasicDetail
 
     fun getLinkedinUsersList() {
         viewModelScope.launch {
@@ -37,7 +38,7 @@ class SharedViewModel @Inject constructor(
 
                 dataState.data?.let { list ->
                     Timber.d("onSuccess $list")
-                    _linkedinUsers.value = list
+                    _linkedinUsersBasic.value = list
                 }
 
                 dataState.error?.let { error ->
@@ -56,7 +57,7 @@ class SharedViewModel @Inject constructor(
 
                 dataState.data?.let { user ->
                     Timber.d("onSuccess $user")
-                    _linkedinUserDetail.value = user
+                    _linkedinUserBasicDetail.value = user
                 }
 
                 dataState.error?.let { error ->
