@@ -1,6 +1,8 @@
 package com.gianlucaveschi.linkedinmock.usecases
 
 import android.util.Log
+import com.gianlucaveschi.linkedinmock.domain.LinkedinUser
+import com.gianlucaveschi.linkedinmock.domain.util.DataState
 import com.gianlucaveschi.linkedinmock.network.LinkedinService
 
 class GetLinkedinUsersListUseCaseImpl(
@@ -24,10 +26,9 @@ class GetLinkedinUsersListUseCaseImpl(
         }
     }
 
-    private fun handleError(exceptionMessage: String?) {
+    private fun handleError(exceptionMessage: String?): DataState<List<LinkedinUser>> {
         Log.d(TAG, "retrieval failed.")
-        //todo
-        //return DataState.error(exceptionMessage ?: "Unknown Error")
+        return DataState.error(exceptionMessage ?: "Unknown Error")
     }
 
     companion object {
