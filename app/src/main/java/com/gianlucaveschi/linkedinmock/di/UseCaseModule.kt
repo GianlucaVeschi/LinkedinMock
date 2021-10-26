@@ -1,6 +1,8 @@
 package com.gianlucaveschi.linkedinmock.di
 
+import com.gianlucaveschi.linkedinmock.network.LinkedinService
 import com.gianlucaveschi.linkedinmock.usecases.GetLinkedinUsersListUseCase
+import com.gianlucaveschi.linkedinmock.usecases.GetLinkedinUsersListUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,6 +15,12 @@ class UseCaseModule {
 
     @ViewModelScoped
     @Provides
-    fun provideGetLinkedinUsersListUseCase() = GetLinkedinUsersListUseCase()
+    fun provideGetLinkedinUsersListUseCase(
+        linkedinService: LinkedinService,
+    ): GetLinkedinUsersListUseCaseImpl {
+        return GetLinkedinUsersListUseCaseImpl(
+            linkedinService = linkedinService
+        )
+    }
 
 }
