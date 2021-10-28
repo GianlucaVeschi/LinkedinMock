@@ -8,10 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
-import com.gianlucaveschi.linkedinmock.R
 import com.gianlucaveschi.linkedinmock.databinding.UserDetailViewBinding
-import com.gianlucaveschi.linkedinmock.domain.users.LinkedinUserBasic
 import com.gianlucaveschi.linkedinmock.domain.users.LinkedinUserExtended
 import com.gianlucaveschi.linkedinmock.ui.SharedViewModel
 import com.squareup.picasso.Callback
@@ -49,7 +46,7 @@ class LinkedinUserDetailFragment : Fragment() {
 
     private fun collectLinkedinUserDetail() {
         lifecycleScope.launchWhenStarted {
-            viewModel.linkedinUserBasicDetail.collect {
+            viewModel.linkedinUserExtendedDetail.collect {
                 it?.let {
                     Timber.d("imageUrl porcodio ${it.info.image}")
 

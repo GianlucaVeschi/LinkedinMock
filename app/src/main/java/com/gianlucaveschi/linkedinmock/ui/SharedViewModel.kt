@@ -26,8 +26,8 @@ class SharedViewModel @Inject constructor(
     private val _linkedinUsersBasic: MutableStateFlow<List<LinkedinUserBasic>?> = MutableStateFlow(listOf())
     val linkedinUsersBasic: StateFlow<List<LinkedinUserBasic>?> = _linkedinUsersBasic
 
-    private val _linkedinUserBasicDetail: MutableStateFlow<LinkedinUserExtended?> = MutableStateFlow(null)
-    val linkedinUserBasicDetail: StateFlow<LinkedinUserExtended?> = _linkedinUserBasicDetail
+    private val _linkedinUserExtendedDetail: MutableStateFlow<LinkedinUserExtended?> = MutableStateFlow(null)
+    val linkedinUserExtendedDetail: StateFlow<LinkedinUserExtended?> = _linkedinUserExtendedDetail
 
     fun getLinkedinUsersList() {
         viewModelScope.launch {
@@ -57,7 +57,7 @@ class SharedViewModel @Inject constructor(
 
                 dataState.data?.let { user ->
                     Timber.d("onSuccess $user")
-                    _linkedinUserBasicDetail.value = user
+                    _linkedinUserExtendedDetail.value = user
                 }
 
                 dataState.error?.let { error ->
