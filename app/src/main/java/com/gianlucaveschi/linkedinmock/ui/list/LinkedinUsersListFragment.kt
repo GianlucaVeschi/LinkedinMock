@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,8 +18,7 @@ import com.gianlucaveschi.util.NetworkStateHelper
 import com.gianlucaveschi.linkedinmock.ui.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import timber.log.Timber
-
+import androidx.lifecycle.flowWithLifecycle
 
 @AndroidEntryPoint
 class LinkedinUsersListFragment : Fragment(), UsersAdapter.OnUserClickListener {
@@ -31,19 +31,16 @@ class LinkedinUsersListFragment : Fragment(), UsersAdapter.OnUserClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = UsersListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
-        viewModel.getLinkedinUsersList()
 
-        //Set adapter and recyclerview
         setRecyclerView()
 
-        //Setting up the observers internally triggers the data to be retrieved from a DataSource
         if (networkIsAvailable()) {
             collectLinkedinUsers()
         }
@@ -51,19 +48,20 @@ class LinkedinUsersListFragment : Fragment(), UsersAdapter.OnUserClickListener {
 
     private fun collectLinkedinUsers() {
         lifecycleScope.launchWhenStarted {
-            viewModel.linkedinUsersBasic.collect {
-                if (!it.isNullOrEmpty()) {
-                    Timber.d("got the $it")
-                    usersAdapter.setLinkedinUsersList(it)
-                    binding.mainProgressBar.visibility = View.INVISIBLE
-                    binding.usersRecView.adapter = usersAdapter
+            viewModel.getLinkedinUsersList()
+            viewModel.linkedinUsersBasic
+                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED) //Avoid collecting flows when UI is in the background
+                .collect {
+                    if (!it.isNullOrEmpty()) {
+                        usersAdapter.setLinkedinUsersList(it)
+                        binding.mainProgressBar.visibility = View.INVISIBLE
+                        binding.usersRecView.adapter = usersAdapter
+                    }
                 }
-            }
         }
     }
 
     private fun setRecyclerView() {
-        //Initialize adapter
         usersAdapter = UsersAdapter(this)
         binding.usersRecView.apply {
             setHasFixedSize(true)
@@ -73,11 +71,9 @@ class LinkedinUsersListFragment : Fragment(), UsersAdapter.OnUserClickListener {
     }
 
     private fun networkIsAvailable(): Boolean {
-        val available =
-            NetworkStateHelper.isNetworkConnected(
-                activity?.getSystemService(Context.CONNECTIVITY_SERVICE)
-                        as ConnectivityManager
-            )
+        val available = NetworkStateHelper.isNetworkConnected(
+            activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        )
         if (!available) {
             alertError()
         }

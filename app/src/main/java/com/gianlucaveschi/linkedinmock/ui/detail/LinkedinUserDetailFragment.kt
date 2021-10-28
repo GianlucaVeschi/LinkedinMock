@@ -38,26 +38,22 @@ class LinkedinUserDetailFragment : Fragment() {
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
 
-        viewModel.getLinkedinUserDetail(args.userUid)
-
-        //Setting up the observers internally triggers the data to be retrieved from a DataSource
         collectLinkedinUserDetail()
     }
 
     private fun collectLinkedinUserDetail() {
         lifecycleScope.launchWhenStarted {
+            viewModel.getLinkedinUserDetail(args.userUid)
             viewModel.linkedinUserExtendedDetail.collect {
                 it?.let {
-                    Timber.d("imageUrl porcodio ${it.info.image}")
-
                     initiateDetailUI(it)
-
                 }
             }
         }
     }
 
     private fun initiateDetailUI(it: LinkedinUserExtended) {
+        //Set up info
         binding.apply {
             mainProgBar.visibility = View.INVISIBLE
             linkedinUserTitle.text = it.info.name
@@ -65,7 +61,10 @@ class LinkedinUserDetailFragment : Fragment() {
             linkedinUserEmail.text = it.info.email
             linkedinUserNickname.text = it.info.nickname
         }
+
+        //Set up Image
         it.info.image?.let { imageUrl ->
+            Timber.d("imageUrl is found: $imageUrl")
             binding.linkedinUserImageUrl.text = imageUrl
             bindUserDetailImage(imageUrl)
         }

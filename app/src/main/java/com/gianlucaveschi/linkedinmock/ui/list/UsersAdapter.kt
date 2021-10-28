@@ -39,6 +39,8 @@ class UsersAdapter(
         fun bindAdapterImage(imageUrl : String) {
             Picasso.get()
                 .load(imageUrl)
+                .resize(200,200)
+                .centerInside()
                 .into(binding.linkedinUserImage, object : Callback {
                     override fun onSuccess() {
                         binding.linkedinUserImage.visibility = View.VISIBLE
